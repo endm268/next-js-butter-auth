@@ -44,7 +44,7 @@ export const signUp = async (object: User) => {
       },
     });
 
-    return res;
+    return res; // ✅ في حال النجاح، نرجع الكائن كما هو
 
   } catch (error: any) {
     console.error("❌ Sign up error:", error);
@@ -54,10 +54,10 @@ export const signUp = async (object: User) => {
       error?.statusCode === 422 &&
       error?.body?.message === "User already exists"
     ) {
-      throw new Error("هذا البريد الإلكتروني مسجل مسبقًا. حاول تسجيل الدخول.");
+      return { error: "هذا البريد الإلكتروني مسجل مسبقًا. حاول تسجيل الدخول." };
     }
 
     // ❌ حالات أخرى
-    throw new Error(error?.body?.message || "فشل في إنشاء الحساب.");
+    return { error: error?.body?.message || "فشل في إنشاء الحساب." };
   }
 };
